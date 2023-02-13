@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { connect } from 'react-redux'
+import { increment, decrement, incrementAmount } from './features/counter/counterSlice';
 
-function handleOnClick() {
 
-}
+export default function App() {
 
-interface PropsApp {
-  count: number;
-  increment: () => void;
-  decrement: () => void;
-  incrementAmount: (incAmount: number) => void;
-}
+  const count = useSelector(state => state.counter.count)
+  const dispatch = useDispatch()
 
-function App({count, increment, decrement, incrementAmount}: PropsApp) {
+
+
+
   const [incAmount, setIncAmount] = useState(0)
 
   function handleChangeAmount(e: any) {
@@ -23,9 +23,9 @@ function App({count, increment, decrement, incrementAmount}: PropsApp) {
     <div>App
       <p>Count is {count}</p>
 
-      <button onClick={() => increment()}>Increment</button>
-      <button onClick={() => decrement()}>Decrement</button>
-      <button onClick={() => incrementAmount(incAmount)}>incrementAmounT</button>
+      <button onClick={() => dispatch(increment())}>Increment</button>
+      <button onClick={() => dispatch(decrement())}>Decrement</button>
+      <button onClick={() => dispatch(incrementAmount(incAmount))}>incrementAmounT</button>
 
       <input type="number" placeholder="Increment Amount..." value={incAmount} onChange={(e) => handleChangeAmount(e)} />
 
@@ -35,20 +35,25 @@ function App({count, increment, decrement, incrementAmount}: PropsApp) {
   )
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-    count: state.counter.count
-  }
-}
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    increment: () => dispatch({type: "increment"}),
-    decrement: () => dispatch({type: "decrement"}),
-    incrementAmount: (incAmount: number) => dispatch({type: "incrementAmount", payload: incAmount})
-
-  }
-}
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+
+// redux old
+
+// const mapStateToProps = (state: any) => {
+//   return {
+//     count: state.counter.count
+//   }
+// }
+
+// const mapDispatchToProps = (dispatch: any) => {
+//   return {
+//     increment: () => dispatch({type: "increment"}),
+//     decrement: () => dispatch({type: "decrement"}),
+//     incrementAmount: (incAmount: number) => dispatch({type: "incrementAmount", payload: incAmount})
+
+//   }
+// }
+
+
+// export default connect(mapStateToProps, mapDispatchToProps)(App)
