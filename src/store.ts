@@ -1,12 +1,10 @@
-import {configureStore} from "@reduxjs/toolkit"
-import counterReducer from "./features/counter/counterSlice"
+import { configureStore } from "@reduxjs/toolkit"
+import { postsReducer } from "./features/posts/postsSlice"
 
 export const store = configureStore({
     reducer: {
-        counter: counterReducer,
+        posts: postsReducer,
     }
 })
 
-type GetStateType = typeof store.getState
-
-export type RootState = ReturnType<GetStateType>
+export type RootState = ReturnType<typeof store.getState>
