@@ -1,15 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, nanoid } from "@reduxjs/toolkit"
+import { sub } from "date-fns";
 
-const initialState = [
+interface Post {
+    id: string;
+    title: string;
+    content: string;
+    userId?: string | number;
+    date ?: any
+}
+
+type initialStateTyped = Post[]
+
+const initialState: initialStateTyped = [
     {
         id: "1",
         title: "Learning Redux Toolkit",
-        content: "Something in the way"
+        content: "Something in the way",
+        date: sub(new Date(), {minutes: 15}).toISOString()
     },
     {
         id: "2",
         title: "Old Yellow Bricks",
-        content: "It's a very good song. You should listen because it's one of their best musics of all time, not only by the beat (by the way, it's very good), but also by the lyrics that is very very cool."
+        content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione, corporis quaerat voluptatum accusantium ea doloremque, facilis, quia amet accusamus sed nobis? Debitis cumque iste saepe natus unde sint cupiditate atque.",
+        date: sub(new Date(), {minutes: 5}).toISOString()
     }
 ]
 
@@ -17,9 +30,23 @@ const postsSlice = createSlice({
     name: "posts",
     initialState,
     reducers: {
-        postAdd: (state, action) => {
-            state.push(action.payload)
-            alert("Post criado com sucesso!")
+        postAdd: {
+            reducer(state, action) {
+                state.push(action.payload)
+                alert("Post created successfully!")
+            },
+            prepare({title, content, userId}) {
+                return {
+                    payload: {
+                        id: nanoid(),
+                        title,
+                        content,
+                        userId,
+                        date: new Date().toISOString(),
+                    }
+                }
+            }
+                
         }
     }
 })

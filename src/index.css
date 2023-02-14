@@ -71,7 +71,7 @@ form {
 }
 
 
-form input {
+form input, select, option {
   padding: 8px;
   border-radius: 10px;
 }
