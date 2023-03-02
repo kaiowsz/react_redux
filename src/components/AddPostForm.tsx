@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTypedSelector } from '../hooks/useTypedSelector'
-import { postAdd } from '../features/posts/postsSlice'
+import { postAdd, addNewPost } from '../features/posts/postsSlice'
 
 function AddPostForm() {
 
@@ -9,10 +9,11 @@ function AddPostForm() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [userId, setUserId] = useState("")
+    const [requestStatus, setRequestStatus] = useState("idle")
 
     const users = useTypedSelector(state => state.users)
 
-    const canSave = Boolean(title) && Boolean(description) && Boolean(userId)
+    const canSave = [title, description, userId].every(Boolean) && requestStatus === "idle"
 
     function handleSubmitPost(e: FormEvent) {
         e.preventDefault()
@@ -27,11 +28,19 @@ function AddPostForm() {
 
         const newPost = {
             title,
-            content: description,
+            body: description,
             userId,
         }
 
-        dispatch(postAdd(newPost))
+        if(canSave) {
+            try {
+                dispatch(addNewPost(newPost)).unwrap()
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setRequestStatus("idle")
+            }
+        }
 
         setDescription("")
         setTitle("")
