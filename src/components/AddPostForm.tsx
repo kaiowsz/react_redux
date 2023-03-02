@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTypedSelector } from '../hooks/useTypedSelector'
-import { postAdd } from '../src/features/posts/postsSlice'
+import { postAdd } from '../features/posts/postsSlice'
 
 function AddPostForm() {
 
@@ -20,7 +20,6 @@ function AddPostForm() {
         if (title.trim() === "" || description.trim() === "" ) {
             return alert("Complete the fields correctly.")
         }
-        console.log(description.length)
 
         if(description.length > 220) {
             return alert("Text too long. Maximum allowed: 220 characters")
